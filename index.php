@@ -203,14 +203,13 @@ border: none;
        }
 
 .sidenav {
-	text-align: center;
     height: 100%;
     width: 0;
     position: fixed;
     z-index: 100000000;
     top: 70px;
     right: 0;
-    background-color: #111;
+    background-color: white;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -220,13 +219,12 @@ border: none;
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
-    display: block;
+    color: black;
     transition: 0.3s;
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: grey;
 }
 
 .sidenav .closebtn {
@@ -241,11 +239,21 @@ border: none;
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+.info_event{
+	display: block;
+	margin-left: 30%;
+	width: 50%;
+	bottom: 0;
+	background-color: white;
+	width: 0;
+	height: 0;
+	position: fixed;
+	z-index: 10000000000000000000000;
+}
 </style>
 <nav class="navbar nav">
-	<a href="#" onclick="mark()">Культурный Томск</a><input type="text" placeholder="Latitude" id="lat" value="9.877" /> Longitude :
-<input type="text" placeholder="Longitude" id="lng" value="79.694" />
-<button type="button" id="addMarkerBtnId">Add Marker</button>
+	<center><h1 style="font-size: 2em">Культурный Томск</h1></center><input type="hidden" placeholder="Latitude" id="lat" value="56.463649" />
+<input type="hidden" placeholder="Longitude" id="lng" value="84.9549743" />
 </nav>
 <div class="cal">
   <div id="calendar"></div>
@@ -254,13 +262,54 @@ border: none;
 <div id="map"></div>
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <h1 style="color: white;" id="date"></h1>
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
-  <a href="#">Contact</a>
+  <center><h1 style="color: black;" id="date"></h1></center>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#" onclick="openScience()">
+                       Наука
+                    </a>
+               </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Спорт и отдых</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Социальная жизнь</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Развлечения</a>
+                </div>
+                
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Поддержка</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Контакты</a>
+                </div>
+            </center>
 </div>
-<div class="info_event"></div>
+<div id="mySidenav1" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="document.getElementById('mySidenav1').style.width = '0'">&times;</a>
+  <center><h1 style="color: black;">Наука</h1></center>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#" id="scienceFest" onclick="infoEv()">Фестиваль науки</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Фестиваль науки</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Фестиваль науки</a>
+                </div>
+                
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Фестиваль науки</a>
+                </div>
+                <hr><div style="display: block; width: 100%;">
+                    <a href="#">Фестиваль науки</a>
+                </div>
+            </center>
+</div>
+<center><div class="info_event" id="info_event">
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div></center>
 <script type="text/javascript">
     // Start
 _('#calendar').innerHTML = calendar();
@@ -385,8 +434,15 @@ function openSideNav(date){
 	document.getElementById("mySidenav").style.width = "250px";
 	document.getElementById("date").innerHTML = date;
 }
+function openScience(){
+	document.getElementById("mySidenav1").style.width = "250px";
+}
 function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
+}
+function infoEv(){
+	document.getElementById("info_event").style.width = "600px";
+	document.getElementById("info_event").style.height = "250px";
 }
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -406,7 +462,7 @@ function initMap() {
     position: myLatLng,
     map: map
   });
-  google.maps.event.addDomListener(document.getElementById('addMarkerBtnId'), 'click', function(evt) {
+  google.maps.event.addDomListener(document.getElementById('scienceFest'), 'click', function(evt) {
     var marker = new google.maps.Marker({
       position: {
         lat: parseFloat(document.getElementById('lat').value),
