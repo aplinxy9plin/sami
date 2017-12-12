@@ -3,12 +3,12 @@
 <head>
 	<title>Sami</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
-	<link rel="stylesheet" href="./css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/materialForm.css">
-    <script src="./js/jquery-2.1.0.min.js"></script>
-	<script src="./js/bootstrap.min.js"></script>
-	<script src="./js/calendar.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<!--<script src="js/calendar.js"></script>-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAU3XOPaAGyJzmNRAggy0mA167K06Cs4k">
     </script>
 </head>
@@ -19,12 +19,13 @@
 	min-height: 70px;
 	text-align: center;
 	opacity: 1;
+	border-radius: 0;
 }
 /* for demo */
 .cal {
   position: fixed;
-  width: 200px;
-  height: 300px;
+  width: 300px;
+  height: 370px;
   background: #FFF;
   margin: 1em auto;
   border: 4px solid #E2E2E2;
@@ -66,7 +67,7 @@ table {
 .week_cal {
   background: #FFF;
   color: black;
-  font-size: 0.5em;
+  font-size: 1em;
   line-height: 2rem;
 }
 .white_cal {
@@ -76,8 +77,9 @@ tbody.days_cal tr td a {
   padding: 0;
   text-decoration: none;
   background: #FFF;
-  color: #888;
-  height: 30px;
+  vertical-align: middle;
+  color: black;
+  height: 40px;
   display: block;
 }
 tbody.days_cal tr td {
@@ -101,9 +103,6 @@ tbody.days_cal tr td {
   .event:hover{
   opacity:0.5;
   transition: all 0.3s ease;
-}
-.week_event {
-  color: #85BAFF;
 }
 #calendar_data {
   margin: 0;
@@ -203,20 +202,64 @@ border: none;
         z-index: 10000000;
        }
 
+.sidenav {
+	text-align: center;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 100000000;
+    top: 70px;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
 
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
 </style>
 <nav class="navbar nav">
 	<a href="#" onclick="mark()">Культурный Томск</a><input type="text" placeholder="Latitude" id="lat" value="9.877" /> Longitude :
 <input type="text" placeholder="Longitude" id="lng" value="79.694" />
 <button type="button" id="addMarkerBtnId">Add Marker</button>
-
 </nav>
 <div class="cal">
   <div id="calendar"></div>
   <div id="calendar_data"></div>
 </div>
 <div id="map"></div>
-
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <h1 style="color: white;" id="date"></h1>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
 <div class="info_event"></div>
 <script type="text/javascript">
     // Start
@@ -273,7 +316,6 @@ function calendar() {
   html += '<thead>';
   html += '<tr class="head_cal"><th colspan="7">' + month_of_year[month] + '</th></tr>';
   html += '<tr class="subhead_cal"><th colspan="7">' + Calendar.getFullYear() + '</th></tr>';
-  html += '<tr class="week_cal">';
   for (index = 0; index < 7; index++) {
     if (weekday == index) {
       html += '<th class="week_event">' + day_of_week[index] + '</th>';
@@ -307,21 +349,19 @@ function calendar() {
       if (week_day !== 7) {
         // this day
         var day = Calendar.getDate();
-        var info = (Calendar.getMonth() + 1) + '.' + day + '.' + 
+        var info = day + '.' + (Calendar.getMonth() + 1) + '.' + 
         Calendar.getFullYear();
         
         if (today === Calendar.getDate()) {
           html += '<td><a class="today_cal" href="#" data-id="' + 
-          info + '" onclick="return showInfo(\'' + 
-          info + '\')">' +
+          info + '" onclick="openSideNav(\'' + info + '\')">' +
           day + '</a></td>';
           
           //showInfo(info);
           
         } else {
           html += '<td><a href="#" data-id="' + 
-          info + '" onclick="return showInfo(\'' + 
-          info + '\')">' +
+          info + '" onclick="openSideNav(\'' + info + '\')">' +
           day + '</a></td>';
         }
         
@@ -340,6 +380,13 @@ function calendar() {
     
   } // end for loop
   return html;
+}
+function openSideNav(date){
+	document.getElementById("mySidenav").style.width = "250px";
+	document.getElementById("date").innerHTML = date;
+}
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
 }
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
